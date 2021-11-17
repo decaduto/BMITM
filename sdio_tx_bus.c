@@ -347,3 +347,104 @@ done:
 
 	return ret ? -EIO : 0;
 }
+
+sdioh_request_byte(sdioh_info_t *sd, uint rw, uint func, uint regaddr, uint8 *byte)
+{
+	int err_ret;
+#if defined(MMC_SDIO_ABORT)
+	int sdio_abort_retry = MMC_SDIO_ABORT_RETRY_LIMIT;
+#endif
+	sd_info(("%s: rw=%d, func=%d, addr=0x%05x\n", __FUNCTION__, rw, func, regaddr));
+
+	DHD_PM_RESUME_WAIT(sdioh_request_byte_wait);
+	DHD_PM_RESUME_RETURN_ERROR(SDIOH_API_RC_FAIL);
+	if(rw) { /* CMD52 Write */
+		if (func == 0) {
+			/* Can only directly write to some F0 registers.  Handle F2 enable
+			 * as a special case.
+			 */
+			if (regaddr == SDIOD_CCCR_IOEN) {
+				if (gInstance->func[2]) {
+					sdio_claim_host(gInstance->func[2]);
+					if (*byte & SDIO_FUNC_ENABLE_2) {
+						/* Enable Function 2 */
+						err_ret = sdio_enable_func(gInstance->func[2]);
+						if (err_ret) {
+							sd_err(("bcmsdh_sdmmc: enable F2 failed:%d",
+								err_ret));
+						}
+					} else {
+						/* Disable Function 2 */
+						err_ret = sdio_disable_func(gInstance->func[2]);
+						if (err_ret) {
+							sd_err(("bcmsdh_sdmmc: Disab F2 failed:%d",
+								err_ret));
+						}
+					}
+					sdio_release_host(gInstance->func[2]);
+				}
+			}
+#if defined(MMC_SDIO_ABORT)
+			/* to allow abort command through F1 */
+			else if (regaddr == SDIOD_CCCR_IOABORT) {
+				/* Because of SDIO3.0 host issue on Manta,
+				  * sometimes the abort fails.
+				  * Retrying again will fix this issue.
+				  */
+				while (sdio_abort_retry--) {
+					if (gInstance->func[func]) {
+						sdio_claim_host(gInstance->func[func]);
+						/*
+						* this sdio_f0_writeb() can be replaced with
+						* another api depending upon MMC driver change.
+						* As of this time, this is temporaray one
+						*/
+						sdio_writeb(gInstance->func[func],
+							*byte, regaddr, &err_ret);
+						sdio_release_host(gInstance->func[func]);
+					}
+					if (!err_ret)
+						break;
+				}
+			}
+#endif /* MMC_SDIO_ABORT */
+			else if (regaddr < 0xF0) {
+				sd_err(("bcmsdh_sdmmc: F0 Wr:0x%02x: write disallowed\n", regaddr));
+			} else {
+				/* Claim host controller, perform F0 write, and release */
+				if (gInstance->func[func]) {
+					sdio_claim_host(gInstance->func[func]);
+					sdio_f0_writeb(gInstance->func[func],
+						*byte, regaddr, &err_ret);
+					sdio_release_host(gInstance->func[func]);
+				}
+			}
+		} else {
+			/* Claim host controller, perform Fn write, and release */
+			if (gInstance->func[func]) {
+				sdio_claim_host(gInstance->func[func]);
+				sdio_writeb(gInstance->func[func], *byte, regaddr, &err_ret);
+				sdio_release_host(gInstance->func[func]);
+			}
+		}
+	} else { /* CMD52 Read */
+		/* Claim host controller, perform Fn read, and release */
+		if (gInstance->func[func]) {
+			sdio_claim_host(gInstance->func[func]);
+			if (func == 0) {
+				*byte = sdio_f0_readb(gInstance->func[func], regaddr, &err_ret);
+			} else {
+				*byte = sdio_readb(gInstance->func[func], regaddr, &err_ret);
+			}
+			sdio_release_host(gInstance->func[func]);
+		}
+	}
+
+	if (err_ret) {
+		sd_err(("bcmsdh_sdmmc: Failed to %s byte F%d:@0x%05x=%02x, Err: %d\n",
+		                        rw ? "Write" : "Read", func, regaddr, *byte, err_ret));
+	}
+
+	return ((err_ret == 0) ? SDIOH_API_RC_SUCCESS : SDIOH_API_RC_FAIL);
+}
+
