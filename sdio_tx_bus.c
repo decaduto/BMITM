@@ -236,12 +236,9 @@ int dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen){
 	if (bus->glom_enable) {
 		uint32 hwheader1, hwheader2;
 		/* Software tag: channel, sequence number, data offset */
-		swheader = ((SDPCM_CONTROL_CHANNEL << SDPCM_CHANNEL_SHIFT) & SDPCM_CHANNEL_MASK)
-				| bus->tx_seq
-				| ((doff << SDPCM_DOFFSET_SHIFT) & SDPCM_DOFFSET_MASK);
+		swheader = ((SDPCM_CONTROL_CHANNEL << SDPCM_CHANNEL_SHIFT) & SDPCM_CHANNEL_MASK) | bus->tx_seq | ((doff << SDPCM_DOFFSET_SHIFT) & SDPCM_DOFFSET_MASK);
 		htol32_ua_store(swheader, frame + SDPCM_FRAMETAG_LEN + SDPCM_HWEXT_LEN);
-		htol32_ua_store(0, frame + SDPCM_FRAMETAG_LEN
-			+ SDPCM_HWEXT_LEN + sizeof(swheader));
+		htol32_ua_store(0, frame + SDPCM_FRAMETAG_LEN + SDPCM_HWEXT_LEN + sizeof(swheader));
 
 		hwheader1 = (msglen - SDPCM_FRAMETAG_LEN) | (1 << 24);
 		hwheader2 = (len - (msglen)) << 16;
@@ -254,14 +251,11 @@ int dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen){
 #endif /* BCMSDIOH_TXGLOM */
 	{
 	/* Software tag: channel, sequence number, data offset */
-	swheader = ((SDPCM_CONTROL_CHANNEL << SDPCM_CHANNEL_SHIFT) & SDPCM_CHANNEL_MASK)
-	        | bus->tx_seq | ((doff << SDPCM_DOFFSET_SHIFT) & SDPCM_DOFFSET_MASK);
+	swheader = ((SDPCM_CONTROL_CHANNEL << SDPCM_CHANNEL_SHIFT) & SDPCM_CHANNEL_MASK) | bus->tx_seq | ((doff << SDPCM_DOFFSET_SHIFT) & SDPCM_DOFFSET_MASK);
 	htol32_ua_store(swheader, frame + SDPCM_FRAMETAG_LEN);
 	htol32_ua_store(0, frame + SDPCM_FRAMETAG_LEN + sizeof(swheader));
 	}
 	if (!TXCTLOK(bus)) {
-		DHD_INFO(("%s: No bus credit bus->tx_max %d, bus->tx_seq %d\n",
-			__FUNCTION__, bus->tx_max, bus->tx_seq));
 		bus->ctrl_frame_stat = TRUE;
 		/* Send from dpc */
 		bus->ctrl_frame_buf = frame;
@@ -276,7 +270,6 @@ int dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen){
 		}
 
 		if (bus->ctrl_frame_stat == FALSE) {
-			DHD_INFO(("%s: ctrl_frame_stat == FALSE\n", __FUNCTION__));
 			ret = 0;
 		} else {
 			bus->dhd->txcnt_timeout++;
@@ -284,13 +277,7 @@ int dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen){
 #ifdef CUSTOMER_HW4
 				uint32 status, retry = 0;
 				R_SDREG(status, &bus->regs->intstatus, retry);
-				DHD_TRACE_HW4(("%s: txcnt_timeout, INT status=0x%08X\n",
-					__FUNCTION__, status));
-				DHD_TRACE_HW4(("%s : tx_max : %d, tx_seq : %d, clkstate : %d \n",
-					__FUNCTION__, bus->tx_max, bus->tx_seq, bus->clkstate));
 #endif /* CUSTOMER_HW4 */
-				DHD_ERROR(("%s: ctrl_frame_stat == TRUE txcnt_timeout=%d\n",
-					__FUNCTION__, bus->dhd->txcnt_timeout));
 			}
 			ret = -1;
 			bus->ctrl_frame_stat = FALSE;
@@ -310,24 +297,18 @@ int dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen){
 #endif
 
 		do {
-			ret = dhd_bcmsdh_send_buf(bus, bcmsdh_cur_sbwad(sdh), SDIO_FUNC_2, F2SYNC,
-			                          frame, len, NULL, NULL, NULL);
+			ret = dhd_bcmsdh_send_buf(bus, bcmsdh_cur_sbwad(sdh), SDIO_FUNC_2, F2SYNC, frame, len, NULL, NULL, NULL);
 			ASSERT(ret != BCME_PENDING);
 
 			if (ret == BCME_NODEVICE) {
-				DHD_ERROR(("%s: Device asleep already\n", __FUNCTION__));
+
 			} else if (ret < 0) {
 			/* On failure, abort the command and terminate the frame */
-				DHD_INFO(("%s: sdio error %d, abort command and terminate frame.\n",
-				          __FUNCTION__, ret));
 				bus->tx_sderrs++;
 
 				bcmsdh_abort(sdh, SDIO_FUNC_2);
 
 #ifdef BCMSPI
-				DHD_ERROR(("%s: Check Overflow or F2-fifo-not-ready counters."
-					   " gSPI transmit error on control channel.\n",
-					   __FUNCTION__));
 #endif /* BCMSPI */
 				bcmsdh_cfg_write(sdh, SDIO_FUNC_1, SBSDIO_FUNC1_FRAMECTRL,
 				                 SFC_WF_TERM, NULL);
@@ -335,10 +316,8 @@ int dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen){
 
 				for (i = 0; i < 3; i++) {
 					uint8 hi, lo;
-					hi = bcmsdh_cfg_read(sdh, SDIO_FUNC_1,
-					                     SBSDIO_FUNC1_WFRAMEBCHI, NULL);
-					lo = bcmsdh_cfg_read(sdh, SDIO_FUNC_1,
-					                     SBSDIO_FUNC1_WFRAMEBCLO, NULL);
+					hi = bcmsdh_cfg_read(sdh, SDIO_FUNC_1, SBSDIO_FUNC1_WFRAMEBCHI, NULL);
+					lo = bcmsdh_cfg_read(sdh, SDIO_FUNC_1, SBSDIO_FUNC1_WFRAMEBCLO, NULL);
 					bus->f1regdata += 2;
 					if ((hi == 0) && (lo == 0))
 						break;
