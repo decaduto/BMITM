@@ -1,6 +1,180 @@
-int
-dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen)
-{
+typedef struct dhd_bus {
+	dhd_pub_t	*dhd;
+
+	bcmsdh_info_t	*sdh;			/* Handle for BCMSDH calls */
+	si_t		*sih;			/* Handle for SI calls */
+	char		*vars;			/* Variables (from CIS and/or other) */
+	uint		varsz;			/* Size of variables buffer */
+	uint32		sbaddr;			/* Current SB window pointer (-1, invalid) */
+
+	sdpcmd_regs_t	*regs;			/* Registers for SDIO core */
+	uint		sdpcmrev;		/* SDIO core revision */
+	uint		armrev;			/* CPU core revision */
+	uint		ramrev;			/* SOCRAM core revision */
+	uint32		ramsize;		/* Size of RAM in SOCRAM (bytes) */
+	uint32		orig_ramsize;		/* Size of RAM in SOCRAM (bytes) */
+	uint32		srmemsize;		/* Size of SRMEM */
+
+	uint32		bus;			/* gSPI or SDIO bus */
+	uint32		hostintmask;		/* Copy of Host Interrupt Mask */
+	uint32		intstatus;		/* Intstatus bits (events) pending */
+	bool		dpc_sched;		/* Indicates DPC schedule (intrpt rcvd) */
+	bool		fcstate;		/* State of dongle flow-control */
+
+	uint16		cl_devid;		/* cached devid for dhdsdio_probe_attach() */
+	char		*fw_path;		/* module_param: path to firmware image */
+	char		*nv_path;		/* module_param: path to nvram vars file */
+	const char      *nvram_params;		/* user specified nvram params. */
+
+	uint		blocksize;		/* Block size of SDIO transfers */
+	uint		roundup;		/* Max roundup limit */
+
+	struct pktq	txq;			/* Queue length used for flow-control */
+	uint8		flowcontrol;		/* per prio flow control bitmask */
+	uint8		tx_seq;			/* Transmit sequence number (next) */
+	uint8		tx_max;			/* Maximum transmit sequence allowed */
+
+	uint8		hdrbuf[MAX_HDR_READ + DHD_SDALIGN];
+	uint8		*rxhdr;			/* Header of current rx frame (in hdrbuf) */
+	uint16		nextlen;		/* Next Read Len from last header */
+	uint8		rx_seq;			/* Receive sequence number (expected) */
+	bool		rxskip;			/* Skip receive (awaiting NAK ACK) */
+
+	void		*glomd;			/* Packet containing glomming descriptor */
+	void		*glom;			/* Packet chain for glommed superframe */
+	uint		glomerr;		/* Glom packet read errors */
+
+	uint8		*rxbuf;			/* Buffer for receiving control packets */
+	uint		rxblen;			/* Allocated length of rxbuf */
+	uint8		*rxctl;			/* Aligned pointer into rxbuf */
+	uint8		*databuf;		/* Buffer for receiving big glom packet */
+	uint8		*dataptr;		/* Aligned pointer into databuf */
+	uint		rxlen;			/* Length of valid data in buffer */
+
+	uint8		sdpcm_ver;		/* Bus protocol reported by dongle */
+
+	bool		intr;			/* Use interrupts */
+	bool		poll;			/* Use polling */
+	bool		ipend;			/* Device interrupt is pending */
+	bool		intdis;			/* Interrupts disabled by isr */
+	uint 		intrcount;		/* Count of device interrupt callbacks */
+	uint		lastintrs;		/* Count as of last watchdog timer */
+	uint		spurious;		/* Count of spurious interrupts */
+	uint		pollrate;		/* Ticks between device polls */
+	uint		polltick;		/* Tick counter */
+	uint		pollcnt;		/* Count of active polls */
+
+#ifdef DHD_DEBUG
+	dhd_console_t	console;		/* Console output polling support */
+	uint		console_addr;		/* Console address from shared struct */
+#endif /* DHD_DEBUG */
+
+	uint		regfails;		/* Count of R_REG/W_REG failures */
+
+	uint		clkstate;		/* State of sd and backplane clock(s) */
+	bool		activity;		/* Activity flag for clock down */
+	int32		idletime;		/* Control for activity timeout */
+	int32		idlecount;		/* Activity timeout counter */
+	int32		idleclock;		/* How to set bus driver when idle */
+	int32		sd_divisor;		/* Speed control to bus driver */
+	int32		sd_mode;		/* Mode control to bus driver */
+	int32		sd_rxchain;		/* If bcmsdh api accepts PKT chains */
+	bool		use_rxchain;		/* If dhd should use PKT chains */
+	bool		sleeping;		/* Is SDIO bus sleeping? */
+	uint		rxflow_mode;		/* Rx flow control mode */
+	bool		rxflow;			/* Is rx flow control on */
+	uint		prev_rxlim_hit;		/* Is prev rx limit exceeded (per dpc schedule) */
+	bool		alp_only;		/* Don't use HT clock (ALP only) */
+	/* Field to decide if rx of control frames happen in rxbuf or lb-pool */
+	bool		usebufpool;
+
+#ifdef SDTEST
+	/* external loopback */
+	bool		ext_loop;
+	uint8		loopid;
+
+	/* pktgen configuration */
+	uint		pktgen_freq;		/* Ticks between bursts */
+	uint		pktgen_count;		/* Packets to send each burst */
+	uint		pktgen_print;		/* Bursts between count displays */
+	uint		pktgen_total;		/* Stop after this many */
+	uint		pktgen_minlen;		/* Minimum packet data len */
+	uint		pktgen_maxlen;		/* Maximum packet data len */
+	uint		pktgen_mode;		/* Configured mode: tx, rx, or echo */
+	uint		pktgen_stop;		/* Number of tx failures causing stop */
+
+	/* active pktgen fields */
+	uint		pktgen_tick;		/* Tick counter for bursts */
+	uint		pktgen_ptick;		/* Burst counter for printing */
+	uint		pktgen_sent;		/* Number of test packets generated */
+	uint		pktgen_rcvd;		/* Number of test packets received */
+	uint		pktgen_prev_time;	/* Time at which previous stats where printed */
+	uint		pktgen_prev_sent;	/* Number of test packets generated when
+						 * previous stats were printed
+						 */
+	uint		pktgen_prev_rcvd;	/* Number of test packets received when
+						 * previous stats were printed
+						 */
+	uint		pktgen_fail;		/* Number of failed send attempts */
+	uint16		pktgen_len;		/* Length of next packet to send */
+#define PKTGEN_RCV_IDLE     (0)
+#define PKTGEN_RCV_ONGOING  (1)
+	uint16		pktgen_rcv_state;		/* receive state */
+	uint		pktgen_rcvd_rcvsession;	/* test pkts rcvd per rcv session. */
+#endif /* SDTEST */
+
+	/* Some additional counters */
+	uint		tx_sderrs;		/* Count of tx attempts with sd errors */
+	uint		fcqueued;		/* Tx packets that got queued */
+	uint		rxrtx;			/* Count of rtx requests (NAK to dongle) */
+	uint		rx_toolong;		/* Receive frames too long to receive */
+	uint		rxc_errors;		/* SDIO errors when reading control frames */
+	uint		rx_hdrfail;		/* SDIO errors on header reads */
+	uint		rx_badhdr;		/* Bad received headers (roosync?) */
+	uint		rx_badseq;		/* Mismatched rx sequence number */
+	uint		fc_rcvd;		/* Number of flow-control events received */
+	uint		fc_xoff;		/* Number which turned on flow-control */
+	uint		fc_xon;			/* Number which turned off flow-control */
+	uint		rxglomfail;		/* Failed deglom attempts */
+	uint		rxglomframes;		/* Number of glom frames (superframes) */
+	uint		rxglompkts;		/* Number of packets from glom frames */
+	uint		f2rxhdrs;		/* Number of header reads */
+	uint		f2rxdata;		/* Number of frame data reads */
+	uint		f2txdata;		/* Number of f2 frame writes */
+	uint		f1regdata;		/* Number of f1 register accesses */
+#ifdef BCMSPI
+	bool		dwordmode;
+#endif /* BCMSPI */
+
+	uint8		*ctrl_frame_buf;
+	uint32		ctrl_frame_len;
+	bool		ctrl_frame_stat;
+#ifndef BCMSPI
+	uint32		rxint_mode;	/* rx interrupt mode */
+#endif /* BCMSPI */
+	bool		remap;		/* Contiguous 1MB RAM: 512K socram + 512K devram
+					 * Available with socram rev 16
+					 * Remap region not DMA-able
+					 */
+	bool		kso;
+	bool		_slpauto;
+	bool		_oobwakeup;
+	bool		_srenab;
+	bool        readframes;
+	bool        reqbussleep;
+	uint32		resetinstr;
+	uint32		dongle_ram_base;
+#ifdef BCMSDIOH_TXGLOM
+	void		*glom_pkt_arr[SDPCM_MAXGLOM_SIZE];	/* Array of pkts for glomming */
+	uint16		glom_cnt;	/* Number of pkts in the glom array */
+	uint16		glom_total_len;	/* Total length of pkts in glom array */
+	bool		glom_enable;	/* Flag to indicate whether tx glom is enabled/disabled */
+	uint8		glom_mode;	/* Glom mode - 0-copy mode, 1 - Multi-descriptor mode */
+	uint32		glomsize;	/* Glom size limitation */
+#endif
+} dhd_bus_t;
+
+int dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen){
 	uint8 *frame;
 	uint16 len;
 	uint32 swheader;
@@ -9,8 +183,6 @@ dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen)
 	uint8 doff = 0;
 	int ret = -1;
 	int i;
-
-	DHD_TRACE(("%s: Enter\n", __FUNCTION__));
 
 	if (bus->dhd->dongle_reset)
 		return -EIO;
@@ -27,7 +199,6 @@ dhd_bus_txctl(struct dhd_bus *bus, uchar *msg, uint msglen)
 			msglen += doff;
 			bzero(frame, doff + SDPCM_HDRLEN);
 		}
-		ASSERT(doff < DHD_SDALIGN);
 	}
 	doff += SDPCM_HDRLEN;
 
