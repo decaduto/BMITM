@@ -337,25 +337,22 @@ done:
 
 	dhd_os_sdunlock(bus->dhd);
 
-	if (ret)
+	if (ret){
 		bus->dhd->tx_ctlerrs++;
-	else
+	}else{
 		bus->dhd->tx_ctlpkts++;
-
-	if (bus->dhd->txcnt_timeout >= MAX_CNTL_TIMEOUT)
+	}
+	if (bus->dhd->txcnt_timeout >= MAX_CNTL_TIMEOUT){
 		return -ETIMEDOUT;
-
+	}
 	return ret ? -EIO : 0;
 }
 
-sdioh_request_byte(sdioh_info_t *sd, uint rw, uint func, uint regaddr, uint8 *byte)
-{
+int sdioh_request_byte(sdioh_info_t *sd, uint rw, uint func, uint regaddr, uint8 *byte){
 	int err_ret;
 #if defined(MMC_SDIO_ABORT)
 	int sdio_abort_retry = MMC_SDIO_ABORT_RETRY_LIMIT;
 #endif
-	sd_info(("%s: rw=%d, func=%d, addr=0x%05x\n", __FUNCTION__, rw, func, regaddr));
-
 	DHD_PM_RESUME_WAIT(sdioh_request_byte_wait);
 	DHD_PM_RESUME_RETURN_ERROR(SDIOH_API_RC_FAIL);
 	if(rw) { /* CMD52 Write */
@@ -369,17 +366,10 @@ sdioh_request_byte(sdioh_info_t *sd, uint rw, uint func, uint regaddr, uint8 *by
 					if (*byte & SDIO_FUNC_ENABLE_2) {
 						/* Enable Function 2 */
 						err_ret = sdio_enable_func(gInstance->func[2]);
-						if (err_ret) {
-							sd_err(("bcmsdh_sdmmc: enable F2 failed:%d",
-								err_ret));
 						}
 					} else {
 						/* Disable Function 2 */
 						err_ret = sdio_disable_func(gInstance->func[2]);
-						if (err_ret) {
-							sd_err(("bcmsdh_sdmmc: Disab F2 failed:%d",
-								err_ret));
-						}
 					}
 					sdio_release_host(gInstance->func[2]);
 				}
@@ -409,13 +399,11 @@ sdioh_request_byte(sdioh_info_t *sd, uint rw, uint func, uint regaddr, uint8 *by
 			}
 #endif /* MMC_SDIO_ABORT */
 			else if (regaddr < 0xF0) {
-				sd_err(("bcmsdh_sdmmc: F0 Wr:0x%02x: write disallowed\n", regaddr));
 			} else {
 				/* Claim host controller, perform F0 write, and release */
 				if (gInstance->func[func]) {
 					sdio_claim_host(gInstance->func[func]);
-					sdio_f0_writeb(gInstance->func[func],
-						*byte, regaddr, &err_ret);
+					sdio_f0_writeb(gInstance->func[func], *byte, regaddr, &err_ret);
 					sdio_release_host(gInstance->func[func]);
 				}
 			}
@@ -438,11 +426,6 @@ sdioh_request_byte(sdioh_info_t *sd, uint rw, uint func, uint regaddr, uint8 *by
 			}
 			sdio_release_host(gInstance->func[func]);
 		}
-	}
-
-	if (err_ret) {
-		sd_err(("bcmsdh_sdmmc: Failed to %s byte F%d:@0x%05x=%02x, Err: %d\n",
-		                        rw ? "Write" : "Read", func, regaddr, *byte, err_ret));
 	}
 
 	return ((err_ret == 0) ? SDIOH_API_RC_SUCCESS : SDIOH_API_RC_FAIL);
