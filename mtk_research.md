@@ -197,3 +197,88 @@ Path al source: https://github.com/OnePlusOSS/android_kernel_oneplus_mt6893/tree
 
 
 ```
+
+Analizzando il driver MDDP si incappa in funzioni come:
+
+```c
+
+int32_t mddpwh_sm_init(struct mddp_app_t *app){
+	memcpy(&app->state_machines,
+		&mddpwh_state_machines_s,
+		sizeof(mddpwh_state_machines_s));
+
+	MDDP_S_LOG(MDDP_LL_INFO,
+			"%s: %p, %p\n",
+			__func__,
+			&(app->state_machines), &mddpwh_state_machines_s);
+	mddp_dump_sm_table(app);
+
+	app->md_recv_msg_hdlr = mddpw_wfpm_msg_hdlr;
+	app->reg_drv_callback = mddpw_drv_reg_callback; /* here */
+	app->dereg_drv_callback = mddpw_drv_dereg_callback;
+	app->sysfs_callback = mddpwh_sysfs_callback;
+	memcpy(&app->md_cfg, &mddpw_md_cfg_s, sizeof(struct mddp_md_cfg_t));
+	app->is_config = 1;
+
+	setup_timer(&mddpw_timer, mddpw_reset_work, 0);
+	INIT_WORK(&(mddpw_reset_workq), mddpw_ack_md_reset);
+	return 0;
+}
+
+static int32_t mddpw_drv_reg_callback(struct mddp_drv_handle_t *handle){
+	struct mddpw_drv_handle_t         *wifi_handle;
+
+	if (handle->wifi_handle == NULL) {
+		MDDP_S_LOG(MDDP_LL_ERR, "%s: handle NULL\n", __func__);
+		return -EINVAL;
+	}
+
+	wifi_handle = handle->wifi_handle;
+
+	wifi_handle->add_txd = mddpw_drv_add_txd; /* here */
+	wifi_handle->get_net_stat = mddpw_drv_get_net_stat;
+	wifi_handle->get_ap_rx_reorder_buf = mddpw_drv_get_ap_rx_reorder_buf;
+	wifi_handle->get_md_rx_reorder_buf = mddpw_drv_get_md_rx_reorder_buf;
+	wifi_handle->notify_drv_info = mddpw_drv_notify_info;
+	wifi_handle->get_net_stat_ext = mddpw_drv_get_net_stat_ext;
+	wifi_handle->get_sys_stat = mddpw_drv_get_sys_stat;
+
+	return 0;
+}
+
+
+static int32_t mddpw_drv_add_txd(struct mddpw_txd_t *txd)
+{
+	struct mddp_md_msg_t    *md_msg;
+	struct mddp_app_t       *app;
+
+	// Send TXD to MD
+	app = mddp_get_app_inst(MDDP_APP_TYPE_WH);
+
+	if (!app->is_config) {
+		MDDP_S_LOG(MDDP_LL_ERR,
+			"%s: app_type(MDDP_APP_TYPE_WH) not configured!\n",
+			__func__);
+		return -ENODEV;
+	}
+
+	md_msg = kzalloc(sizeof(struct mddp_md_msg_t) +
+	sizeof(struct mddpw_txd_t) + txd->txd_length, GFP_ATOMIC);
+
+	if (unlikely(!md_msg)) { // controllo del cazzo
+		WARN_ON(1);
+		return -ENOMEM;
+	}
+
+	md_msg->msg_id = IPC_MSG_ID_WFPM_SEND_MD_TXD_NOTIFY;
+	md_msg->data_len = sizeof(struct mddpw_txd_t) + txd->txd_length; // -> txd->txd_length viene controllata?
+	memcpy(md_msg->data, txd, md_msg->data_len);
+	/* aka 	memcpy(md_msg->data, txd, (sizeof(struct mddpw_txd_t) + txd->txd_length));
+	mddp_ipc_send_md(app, md_msg, MDFPM_USER_ID_NULL);
+
+	return 0;
+}
+```
+
+Esempio di code quality, da notare che poi `md_msg` viene inviata tramite ipc (al modem?)
+
