@@ -39,3 +39,97 @@ config MTK_MDDP_WH_SUPPORT
 
 ^ ripete quello scritto sopra, abbiamo codice Hotspot (pieno di parsing) che funge da possibile surface.
 
+Log di Iw list:
+
+```
+	Supported commands:
+		 * new_interface
+		 * set_interface
+		 * new_key
+		 * start_ap
+		 * new_station
+		 * set_bss
+		 * associate
+		 * deauthenticate
+		 * disassociate
+		 * join_ibss
+		 * set_pmksa
+		 * del_pmksa
+		 * flush_pmksa
+		 * remain_on_channel
+		 * set_tx_bitrate_mask
+		 * frame
+		 * frame_wait_cancel
+		 * set_channel
+		 * tdls_mgmt
+		 * tdls_oper
+		 * start_sched_scan
+		 * testmode
+		 * connect
+		 * disconnect
+		 * channel_switch
+	Supported TX frame types:
+		 * IBSS: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+		 * managed: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+		 * AP: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+		 * AP/VLAN: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+		 * P2P-client: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+		 * P2P-GO: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+	Supported RX frame types:
+		 * IBSS: 0xd0
+		 * managed: 0x40 0xb0 0xd0
+		 * AP: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
+		 * AP/VLAN: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
+		 * P2P-client: 0x40 0xd0
+		 * P2P-GO: 0x40 0xd0
+	WoWLAN support:
+		 * wake up on anything (device continues operating normally)
+		 * wake up on disconnect
+		 * wake up on magic packet
+	software interface modes (can always be added):
+		 * P2P-device
+	valid interface combinations:
+		 * #{ managed } <= 3, #{ P2P-client, P2P-GO } <= 1,
+		   total <= 3, #channels <= 2
+	Device has client inactivity timer.
+	Device supports SAE with AUTHENTICATE command
+	Device supports scan flush.
+```
+
+dump della struct wiphy, i callback in cfg80211_ops sono:
+
+```
+
+		 * new_interface
+		 * set_interface
+		 * new_key
+		 * start_ap
+		 * new_station
+		 * set_bss
+		 * associate
+		 * deauthenticate
+		 * disassociate
+		 * join_ibss
+		 * set_pmksa
+		 * del_pmksa
+		 * flush_pmksa
+		 * remain_on_channel
+		 * set_tx_bitrate_mask
+		 * frame
+		 * frame_wait_cancel
+		 * set_channel
+		 * tdls_mgmt
+		 * tdls_oper
+		 * start_sched_scan
+		 * testmode
+		 * connect
+		 * disconnect
+		 * channel_switch
+```
+
+Sappiamo che supporta WoWlan, ergo si potrebbe studiare un attacco Layer 2 sui Magic Frames (richiede conoscenza indirizzo MAC del target, ottenibile in più modi)
+
+Analisi della feature CONFIG_MTK_MCIF_WIFI_SUPPORT
+==================================================
+
+Non presente nel source del driver Mediatek,
