@@ -129,7 +129,71 @@ dump della struct wiphy, i callback in cfg80211_ops sono:
 
 Sappiamo che supporta WoWlan, ergo si potrebbe studiare un attacco Layer 2 sui Magic Frames (richiede conoscenza indirizzo MAC del target, ottenibile in più modi)
 
-Analisi della feature CONFIG_MTK_MCIF_WIFI_SUPPORT
+Analisi della feature CONFIG_MTK_MCIF_WIFI_SUPPORT (Modem Coexistence InterFace?)
 ==================================================
 
-Non presente nel source del driver Mediatek,
+Non presente nel source del driver Mediatek come CONFIG_MTK_MCIF_WIFI_SUPPORT, definita come CFG_MTK_MCIF_WIFI_SUPPORT
+
+```
+/*! \file   mddp.c
+*    \brief  Main routines for modem direct path handling
+*
+*    This file contains the support routines of modem direct path operation.
+*/
+```
+
+(from /mgmt/mddp.c)
+
+Lista delle funzioni supportate lato driver dal mddp:
+
+```c
+int32_t mddpMdNotifyInfo(struct mddpw_md_notify_info_t *prMdInfo);
+int32_t mddpChangeState(enum mddp_state_e event, void *buf, uint32_t *buf_len);
+int32_t mddpGetMdStats(IN struct net_device *prDev);
+int32_t mddpSetTxDescTemplate(IN struct ADAPTER *prAdapter,
+	IN struct STA_RECORD *prStaRec,
+	IN uint8_t fgActivate);
+void mddpUpdateReorderQueParm(struct ADAPTER *prAdapter, struct RX_BA_ENTRY *prReorderQueParm, struct SW_RFB *prSwRfb);
+int32_t mddpNotifyDrvMac(IN struct ADAPTER *prAdapter);
+int32_t mddpNotifyDrvTxd(IN struct ADAPTER *prAdapter, IN struct STA_RECORD *prStaRec, IN uint8_t fgActivate);
+int32_t mddpNotifyStaTxd(IN struct ADAPTER *prAdapter);
+void mddpNotifyWifiOnStart(void);
+int32_t mddpNotifyWifiOnEnd(void);
+void mddpNotifyWifiOffStart(void);
+void mddpNotifyWifiOffEnd(void);
+void setMddpSupportRegister(IN struct ADAPTER *prAdapter);
+```
+
+Per semplicità, si studiano prima le funzioni con args -> (void)
+
+```c
+void mddpNotifyWifiOnStart(void){
+	mddpRegisterCb();
+	mddpNotifyWifiStatus(MDDPW_DRV_INFO_WLAN_ON_START);
+}
+
+/* da cui */
+
+static int32_t mddpRegisterCb(void)
+{
+	int32_t ret = 0;
+
+	gMddpFunc.wifi_handle = &gMddpWFunc;
+
+	ret = mddp_drv_attach(&gMddpDrvConf, &gMddpFunc);
+	DBGLOG(INIT, INFO, "mddp_drv_attach ret: %d\n", ret);
+
+	return ret;
+}
+
+/* 
+nota che a quanto pare mddp è un driver A SE STANTE, infatti la funzione 'mddp_drv_attach' non è presente nel path di gen4 
+MDP è un driver mediatek usato per il Media Direct Path (conversione di formati media?)
+da https://github.com/OnePlusOSS/android_kernel_oneplus_mt6893/blob/b0d6703b0bcd129e65424b3cfa368dd5e0a8f4b0/drivers/misc/mediatek/mddp/Kconfig
+otteniamo varie informazioni già citate sopra per la feature MDDP, nota che MTK_MDDP_WH_SUPPORT non è supportato sul redmi 10 5g, invece MTK_MDDP_SUPPORT lo è.
+
+Path al source: https://github.com/OnePlusOSS/android_kernel_oneplus_mt6893/tree/b0d6703b0bcd129e65424b3cfa368dd5e0a8f4b0/drivers/misc/mediatek/mddp
+*/
+
+
+```
