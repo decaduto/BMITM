@@ -65,10 +65,15 @@ static int __iwl_up(struct iwl_priv *priv){
 ```
 
 The interesting function are:
+
 	* iwl_trans_start_hw
+
 	* iwl_run_init_ucode
+	
 	* iwl_trans_start_hw
+	
 	* iwl_load_ucode_wait_alive
+	
 	* iwl_alive_start
 	
 
