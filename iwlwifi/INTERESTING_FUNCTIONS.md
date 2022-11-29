@@ -1,1 +1,2 @@
 iwl_setup_rx_handlers
+iwl_dvm_send_cmd
