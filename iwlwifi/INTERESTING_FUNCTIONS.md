@@ -96,4 +96,22 @@ static int iwl_trans_pcie_start_hw(struct iwl_trans *trans)
 }
 ```
 
-So a bus dependent function, which will write in some shared register for initializating the wlan ROM
+So a bus dependent function, which will write in some shared register for initializating the wlan ROM.
+
+__iwl_init_run_ucode__ is a quite simple function, it calls only:
+```c
+	ret = iwl_load_ucode_wait_alive(priv, IWL_UCODE_INIT);
+	if (ret)
+		goto error;
+
+	ret = iwl_init_alive_start(priv);
+	if (ret)
+		goto error;
+
+	/*
+	 * Some things may run in the background now, but we
+	 * just wait for the calibration complete notification.
+	 */
+	ret = iwl_wait_notification(&priv->notif_wait, &calib_wait,
+					UCODE_CALIB_TIMEOUT);
+```
