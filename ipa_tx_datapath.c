@@ -1,3 +1,218 @@
+int ipa3_send(struct ipa3_sys_context *sys, u32 num_desc, struct ipa3_desc *desc, bool in_atomic){
+	struct ipa3_tx_pkt_wrapper *tx_pkt, *tx_pkt_first = NULL;
+	struct ipahal_imm_cmd_pyld *tag_pyld_ret = NULL;
+	struct ipa3_tx_pkt_wrapper *next_pkt;
+	struct gsi_xfer_elem gsi_xfer[IPA_SEND_MAX_DESC];
+	int i = 0;
+	int j;
+	int result;
+	u32 mem_flag = GFP_ATOMIC;
+	const struct ipa_gsi_ep_config *gsi_ep_cfg;
+	bool send_nop = false;
+	unsigned int max_desc;
+
+	if (unlikely(!in_atomic))
+		mem_flag = GFP_KERNEL;
+
+	gsi_ep_cfg = ipa3_get_gsi_ep_info(sys->ep->client);
+	if (unlikely(!gsi_ep_cfg)) {
+		IPAERR("failed to get gsi EP config for client=%d\n",
+			sys->ep->client);
+		return -EFAULT;
+	}
+	if (unlikely(num_desc > IPA_SEND_MAX_DESC)) {
+		IPAERR("max descriptors reached need=%d max=%d\n",
+			num_desc, IPA_SEND_MAX_DESC);
+		WARN_ON(1);
+		return -EPERM;
+	}
+
+	max_desc = gsi_ep_cfg->ipa_if_tlv;
+	if (gsi_ep_cfg->prefetch_mode == GSI_SMART_PRE_FETCH ||
+		gsi_ep_cfg->prefetch_mode == GSI_FREE_PRE_FETCH)
+		max_desc -= gsi_ep_cfg->prefetch_threshold;
+
+	if (unlikely(num_desc > max_desc)) {
+		IPAERR("Too many chained descriptors need=%d max=%d\n",
+			num_desc, max_desc);
+		WARN_ON(1);
+		return -EPERM;
+	}
+
+	/* initialize only the xfers we use */
+	memset(gsi_xfer, 0, sizeof(gsi_xfer[0]) * num_desc);
+
+	spin_lock_bh(&sys->spinlock);
+
+	for (i = 0; i < num_desc; i++) {
+		tx_pkt = kmem_cache_zalloc(ipa3_ctx->tx_pkt_wrapper_cache,
+					   GFP_ATOMIC);
+		if (unlikely(!tx_pkt)) {
+			IPAERR("failed to alloc tx wrapper\n");
+			result = -ENOMEM;
+			goto failure;
+		}
+		INIT_LIST_HEAD(&tx_pkt->link);
+
+		if (i == 0) {
+			tx_pkt_first = tx_pkt;
+			tx_pkt->cnt = num_desc;
+		}
+
+		/* populate tag field */
+		if (desc[i].is_tag_status) {
+			if (unlikely(ipa_populate_tag_field(&desc[i], tx_pkt,
+				&tag_pyld_ret))) {
+				IPAERR("Failed to populate tag field\n");
+				result = -EFAULT;
+				goto failure_dma_map;
+			}
+		}
+
+		tx_pkt->type = desc[i].type;
+
+		if (desc[i].type != IPA_DATA_DESC_SKB_PAGED) {
+			tx_pkt->mem.base = desc[i].pyld;
+			tx_pkt->mem.size = desc[i].len;
+
+			if (!desc[i].dma_address_valid) {
+				tx_pkt->mem.phys_base =
+					dma_map_single(ipa3_ctx->pdev,
+					tx_pkt->mem.base,
+					tx_pkt->mem.size,
+					DMA_TO_DEVICE);
+			} else {
+				tx_pkt->mem.phys_base =
+					desc[i].dma_address;
+				tx_pkt->no_unmap_dma = true;
+			}
+		} else {
+			tx_pkt->mem.base = desc[i].frag;
+			tx_pkt->mem.size = desc[i].len;
+
+			if (!desc[i].dma_address_valid) {
+				tx_pkt->mem.phys_base =
+					skb_frag_dma_map(ipa3_ctx->pdev,
+					desc[i].frag,
+					0, tx_pkt->mem.size,
+					DMA_TO_DEVICE);
+			} else {
+				tx_pkt->mem.phys_base =
+					desc[i].dma_address;
+				tx_pkt->no_unmap_dma = true;
+			}
+		}
+		if (unlikely(dma_mapping_error(ipa3_ctx->pdev,
+			tx_pkt->mem.phys_base))) {
+			IPAERR("failed to do dma map.\n");
+			result = -EFAULT;
+			goto failure_dma_map;
+		}
+
+		tx_pkt->sys = sys;
+		tx_pkt->callback = desc[i].callback;
+		tx_pkt->user1 = desc[i].user1;
+		tx_pkt->user2 = desc[i].user2;
+		tx_pkt->xmit_done = false;
+
+		list_add_tail(&tx_pkt->link, &sys->head_desc_list);
+
+		gsi_xfer[i].addr = tx_pkt->mem.phys_base;
+
+		/*
+		 * Special treatment for immediate commands, where
+		 * the structure of the descriptor is different
+		 */
+		if (desc[i].type == IPA_IMM_CMD_DESC) {
+			gsi_xfer[i].len = desc[i].opcode;
+			gsi_xfer[i].type =
+				GSI_XFER_ELEM_IMME_CMD;
+		} else {
+			gsi_xfer[i].len = desc[i].len;
+			gsi_xfer[i].type =
+				GSI_XFER_ELEM_DATA;
+		}
+
+		if (i == (num_desc - 1)) {
+			if (!sys->use_comm_evt_ring ||
+			    (sys->pkt_sent % IPA_EOT_THRESH == 0)) {
+				gsi_xfer[i].flags |=
+					GSI_XFER_FLAG_EOT;
+				gsi_xfer[i].flags |=
+					GSI_XFER_FLAG_BEI;
+			} else {
+				send_nop = true;
+			}
+			gsi_xfer[i].xfer_user_data =
+				tx_pkt_first;
+		} else {
+			gsi_xfer[i].flags |=
+				GSI_XFER_FLAG_CHAIN;
+		}
+	}
+
+	IPADBG_LOW("ch:%lu queue xfer\n", sys->ep->gsi_chan_hdl);
+	result = gsi_queue_xfer(sys->ep->gsi_chan_hdl, num_desc,
+			gsi_xfer, true);
+	if (unlikely(result != GSI_STATUS_SUCCESS)) {
+		IPAERR_RL("GSI xfer failed.\n");
+		result = -EFAULT;
+		goto failure;
+	}
+
+	if (send_nop && !sys->nop_pending)
+		sys->nop_pending = true;
+	else
+		send_nop = false;
+
+	sys->pkt_sent++;
+	spin_unlock_bh(&sys->spinlock);
+
+	/* set the timer for sending the NOP descriptor */
+	if (send_nop) {
+
+		ktime_t time = ktime_set(0, IPA_TX_SEND_COMPL_NOP_DELAY_NS);
+
+		IPADBG_LOW("scheduling timer for ch %lu\n",
+			sys->ep->gsi_chan_hdl);
+		hrtimer_start(&sys->db_timer, time, HRTIMER_MODE_REL);
+	}
+
+	/* make sure TAG process is sent before clocks are gated */
+	ipa3_ctx->tag_process_before_gating = true;
+
+	return 0;
+
+failure_dma_map:
+		kmem_cache_free(ipa3_ctx->tx_pkt_wrapper_cache, tx_pkt);
+
+failure:
+	ipahal_destroy_imm_cmd(tag_pyld_ret);
+	tx_pkt = tx_pkt_first;
+	for (j = 0; j < i; j++) {
+		next_pkt = list_next_entry(tx_pkt, link);
+		list_del(&tx_pkt->link);
+
+		if (!tx_pkt->no_unmap_dma) {
+			if (desc[j].type != IPA_DATA_DESC_SKB_PAGED) {
+				dma_unmap_single(ipa3_ctx->pdev,
+					tx_pkt->mem.phys_base,
+					tx_pkt->mem.size, DMA_TO_DEVICE);
+			} else {
+				dma_unmap_page(ipa3_ctx->pdev,
+					tx_pkt->mem.phys_base,
+					tx_pkt->mem.size,
+					DMA_TO_DEVICE);
+			}
+		}
+		kmem_cache_free(ipa3_ctx->tx_pkt_wrapper_cache, tx_pkt);
+		tx_pkt = next_pkt;
+	}
+
+	spin_unlock_bh(&sys->spinlock);
+	return result;
+}
+
 int ipa3_tx_dp(enum ipa_client_type dst, struct sk_buff *skb, struct ipa_tx_meta *meta){
 	struct ipa3_desc *desc;
 	struct ipa3_desc _desc[3];
