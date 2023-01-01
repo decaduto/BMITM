@@ -1,6 +1,4 @@
-int ipa3_tx_dp(enum ipa_client_type dst, struct sk_buff *skb,
-		struct ipa_tx_meta *meta)
-{
+int ipa3_tx_dp(enum ipa_client_type dst, struct sk_buff *skb, struct ipa_tx_meta *meta){
 	struct ipa3_desc *desc;
 	struct ipa3_desc _desc[3];
 	int dst_ep_idx;
@@ -229,8 +227,7 @@ fail_pipe_not_valid:
 	return -EPIPE;
 }
 
-static int ipa3_wwan_xmit(struct sk_buff *skb, struct net_device *dev)
-{
+static int ipa3_wwan_xmit(struct sk_buff *skb, struct net_device *dev){
 	int ret = 0;
 	bool qmap_check;
 	struct ipa3_wwan_private *wwan_ptr = netdev_priv(dev);
