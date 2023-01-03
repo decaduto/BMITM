@@ -1,0 +1,330 @@
+[  140.297773] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  140.326491] healthd: battery l=98 v=4396 t=21.3 h=2 st=2 c=-205841 fc=3963000 cc=428 chg=u
+[  145.175955] [brightness]sgm_brightness_set brightness = 0
+[  145.209082] type=1400 audit(1672758179.740:83): avc: denied { read } for comm="Binder:527_2" name="wakeup8" dev="sysfs" ino=45949 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+[  145.254442] [NVT-ts] nvt_drm_notifier_callback 2384: event=2, *blank=1
+[  145.254468] [NVT-ts] nvt_irq_enable 267: enable=0, desc->depth=1
+[  145.254475] [NVT-ts] nvt_ts_suspend 2259: start
+[  145.310109] [NVT-ts] nvt_ts_suspend 2303: end
+[  145.310123] thermal_notifier_callback 3571
+[  145.310141] [brightness]sgm_brightness_set brightness = 0
+[  145.531074] thermal_notifier_callback 3571
+[  145.531090] thermal_notifier lct_backlight_off:1
+[  145.531730] smblib_set_prop_system_temp_level val=0, chg->system_temp_level=0, LctThermal=1, lct_backlight_off= 1, IsInCall=0 \x0a 
+[  145.627847] i2c_geni 4a8c000.i2c: i2c error :-107
+[  145.627890] nq-nci 1-0028: nfc_write: failed to write -107
+[  148.491648] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  148.497249] healthd: battery l=98 v=4397 t=21.3 h=2 st=2 c=-196838 fc=3963000 cc=428 chg=u
+[  156.683688] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  156.731987] healthd: battery l=98 v=4397 t=21.3 h=2 st=2 c=-194397 fc=3963000 cc=428 chg=u
+[  162.639529] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  162.647070] healthd: battery l=98 v=4397 t=21.3 h=2 st=5 c=-193481 fc=3963000 cc=428 chg=u
+[  164.884359] healthd: battery l=98 v=4325 t=21.3 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  167.684613] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  173.070942] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  173.076844] healthd: battery l=98 v=4320 t=21.3 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  181.270576] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  181.306335] healthd: battery l=98 v=4317 t=21.3 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  189.477111] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  189.481775] healthd: battery l=98 v=4317 t=21.3 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  194.173090] healthd: battery l=98 v=4316 t=21.3 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  197.663060] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  197.680871] healthd: battery l=98 v=4316 t=21.3 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  205.859188] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  205.910989] healthd: battery l=98 v=4315 t=21.2 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  214.055958] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  214.064323] healthd: battery l=98 v=4314 t=21.2 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  222.255670] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  222.261867] healthd: battery l=98 v=4314 t=21.1 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  230.450808] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  230.492757] healthd: battery l=98 v=4314 t=21.1 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  238.654076] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  238.658748] healthd: battery l=98 v=4314 t=21.1 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  246.861009] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  246.867151] healthd: battery l=98 v=4314 t=21.0 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  254.162858] healthd: battery l=98 v=4314 t=21.0 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  255.050511] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  255.092817] healthd: battery l=98 v=4314 t=21.0 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  263.261067] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  263.313854] healthd: battery l=98 v=4314 t=21.0 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  271.449002] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  271.480993] healthd: battery l=98 v=4311 t=21.0 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  279.648913] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  279.679304] healthd: battery l=98 v=4311 t=21.0 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  287.851639] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  287.854334] healthd: battery l=98 v=4311 t=20.9 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  296.047780] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  296.054058] healthd: battery l=98 v=4311 t=20.9 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  304.250612] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  304.255921] healthd: battery l=98 v=4311 t=20.9 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  312.460847] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  312.467253] healthd: battery l=98 v=4311 t=20.9 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  314.162779] healthd: battery l=98 v=4311 t=20.9 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  320.650653] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  320.656273] healthd: battery l=98 v=4311 t=20.8 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  328.851744] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  328.894206] healthd: battery l=98 v=4311 t=20.8 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  337.061064] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  337.067727] healthd: battery l=98 v=4309 t=20.8 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  345.253705] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  345.292534] healthd: battery l=98 v=4309 t=20.8 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  347.418646] [cds_ol][0x1917fe078][16:06:21.961035] wlan: [2104:I:QDF] DHCP-R RX: SA:28:3f:69:cc:e6:78 DA:ff:ff:ff:ff:ff:ff
+[  353.453812] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  353.461954] healthd: battery l=98 v=4309 t=20.8 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  361.656482] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  361.692487] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  369.860960] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  369.867029] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  374.162913] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  378.057004] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  378.065184] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  386.270728] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  386.276299] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  394.470697] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  394.476947] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  394.524346] [cds_ol][0x1c7685ff8][16:07:09.066736] wlan: [2104:I:QDF] DHCP-D RX: SA:80:35:c1:53:03:62 DA:ff:ff:ff:ff:ff:ff
+[  395.029375] [cds_ol][0x1c7fc56af][16:07:09.571784] wlan: [2104:I:QDF] DHCP-D RX: SA:80:35:c1:53:03:62 DA:ff:ff:ff:ff:ff:ff
+[  395.975440] init: Untracked pid 6310 exited with status 129
+[  395.976785] init: Untracked pid 6196 received signal 1
+[  402.662496] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  402.713635] healthd: battery l=98 v=4309 t=20.6 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  404.473124] type=1400 audit(1672758439.010:84): avc: denied { syslog_read } for comm="dmesg" scontext=u:r:shell:s0 tcontext=u:r:kernel:s0 tclass=system permissive=0
+[  407.422970] type=1400 audit(1672758441.960:85): avc: denied { read } for comm="Binder:527_2" name="wakeup8" dev="sysfs" ino=45949 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+[  407.448170] thermal_notifier_callback 3571
+[  407.448176] thermal_notifier lct_backlight_off:0
+[  407.448264] dsi-ctrl:[_dsi_ctrl_setup_isr] [DSI_0] IRQ 229 registered
+[  407.448402] smblib_set_prop_system_temp_level val=0, chg->system_temp_level=0, LctThermal=1, lct_backlight_off= 0, IsInCall=0 \x0a 
+[  407.502050] i2c_geni 4a8c000.i2c: i2c error :-107
+[  407.502082] nq-nci 1-0028: nfc_write: failed to write -107
+[  407.520329] IRQ 7: no longer affine to CPU4
+[  407.604563] [drm:programmable_fetch_get_num_lines:231] low vbp+vfp may lead to perf issues in some cases
+[  407.605940] [brightness]sgm_brightness_set brightness = 0
+[  407.606945] [NVT-ts] nvt_drm_notifier_callback 2390: event=1, *blank=0
+[  407.607041] thermal_notifier_callback 3571
+[  407.614502] [NVT-ts] nvt_ts_resume 2324: start
+[  407.614526] [NVT-ts] update_firmware_request 318: filename is novatek_ts_ebbg_fw.bin
+[  407.625783] ueventd: firmware: loading 'novatek_ts_ebbg_fw.bin' for '/devices/platform/soc/4a88000.spi/spi_master/spi1/spi1.0/firmware/novatek_ts_ebbg_fw.bin'
+[  407.634384] [brightness]sgm_brightness_set brightness = 121
+[  407.634664] ueventd: loading /devices/platform/soc/4a88000.spi/spi_master/spi1/spi1.0/firmware/novatek_ts_ebbg_fw.bin took 9ms
+[  407.640353] [NVT-ts] nvt_get_fw_need_write_size 69: fw_need_write_size = 110592(0x1b000), NVT end flag
+[  407.640375] [NVT-ts] nvt_bin_header_parser 176: ovly_info = 0, ilm_dlm_num = 2, ovly_sec_num = 0, info_sec_num = 13, partition = 15
+[  407.643655] [brightness]sgm_brightness_set brightness = 156
+[  407.659674] [brightness]sgm_brightness_set brightness = 202
+[  407.677508] [brightness]sgm_brightness_set brightness = 213
+[  407.744490] [NVT-ts] nvt_update_firmware 937: Update firmware success! <104080 us>
+[  407.745930] [NVT-ts] nvt_get_fw_info 766: FW type is 0x01
+[  407.746484] [NVT-ts] nvt_read_pid 708: PID=5923
+[  407.757762] [NVT-ts] nvt_irq_enable 267: enable=1, desc->depth=0
+[  407.757788] [NVT-ts] nvt_ts_resume 2359: end
+[  408.519783] i2c_geni 4a8c000.i2c: i2c error :-107
+[  408.519809] nq-nci 1-0028: nfc_write: failed to write -107
+[  410.155882] type=1400 audit(1672758444.690:86): avc: denied { syslog_read } for comm="dmesg" scontext=u:r:shell:s0 tcontext=u:r:kernel:s0 tclass=system permissive=0
+[  410.871842] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  410.878729] healthd: battery l=98 v=4309 t=20.6 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  411.176859] type=1400 audit(1672758445.710:87): avc: denied { ioctl } for comm="su" path="/dev/pts/0" dev="devpts" ino=3 ioctlcmd=0x5404 scontext=u:r:magisk_client:s0 tcontext=u:object_r:devpts:s0 tclass=chr_file permissive=0
+[  411.960756] [brightness]sgm_brightness_set brightness = 216
+[  411.977256] [brightness]sgm_brightness_set brightness = 232
+[  411.991638] [brightness]sgm_brightness_set brightness = 240
+[  411.999272] init: Untracked pid 6516 exited with status 0
+[  412.008534] [brightness]sgm_brightness_set brightness = 248
+[  412.028234] [brightness]sgm_brightness_set brightness = 256
+[  412.046327] [brightness]sgm_brightness_set brightness = 264
+[  412.062330] [brightness]sgm_brightness_set brightness = 272
+[  412.075784] [brightness]sgm_brightness_set brightness = 279
+[  419.061124] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  419.068747] healthd: battery l=98 v=4309 t=20.6 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  422.015839] [schedu][0x1e6de86af][16:07:36.558237] wlan: [2103:I:PE] Assoc rsp RX: subtype 1 vdev 0 sys role 3 lim state 1 rssi 0 from 00:a0:57:31:00:a4
+[  422.017536] [schedu][0x1e6df064e][16:07:36.559939] wlan: [2103:I:TXRX] ol_txrx_peer_detach: 3477: ol_txrx_peer_detach peer 0000000000000000, peer->ref_cnt 10
+[  422.017604] [schedu][0x1e6df0bb1][16:07:36.560011] wlan: [2103:I:TXRX] ol_txrx_peer_detach: 3521: started peer_unmap_timer for peer 0000000000000000
+[  422.021291] [schedu][0x1e6e020f8][16:07:36.563707] wlan: [2103:E:QDF] Cannot malloc 0 bytes @ csr_get_cfg_max_tx_power:14202
+[  422.021318] [schedu][0x1e6e02378][16:07:36.563741] wlan: [2103:E:QDF] Cannot malloc 0 bytes @ csr_get_cfg_max_tx_power:14202
+[  422.022516] [schedu][0x1e6e07cc5][16:07:36.564931] wlan: [2103:W:HDD] hdd_get_rssi_snr_by_bssid: 17504: sme_get_rssi_snr_by_bssid failed
+[  422.022732] [schedu][0x1e6e08d70][16:07:36.565154] wlan: [2103:I:HDD] wlan0(vdevid-0): 3e:28:f7:25:c5:f3 connected to 00:a0:57:31:00:a4
+[  422.042872] [schedu][0x1e6e673bd][16:07:36.585291] wlan: [2103:I:WMA] LFR3: Posting WMA_ROAM_OFFLOAD_SYNCH_CNF
+[  422.043840] [soft_i][0x1e6e6bc47][16:07:36.586258] wlan: [0:I:TXRX] ol_txrx_peer_release_ref: 3326: [9][0]: Deleting peer 0000000000000000 ref_cnt -> 0 
+[  422.046800] [schedu][0x1e6e79a4c][16:07:36.589218] wlan: [2103:E:QDF] Cannot malloc 0 bytes @ csr_get_cfg_max_tx_power:14202
+[  422.059629] [schedu][0x1e6eb5c79][16:07:36.602047] wlan: [2103:I:WMI] LFR3:OKC enabled
+[  422.059641] [schedu][0x1e6eb5db3][16:07:36.602064] wlan: [2103:I:WMI] LFR3:PMKSA caching enabled
+[  427.270561] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  427.276623] healthd: battery l=98 v=4309 t=20.6 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  432.221105] [brightness]sgm_brightness_set brightness = 284
+[  432.234068] [brightness]sgm_brightness_set brightness = 292
+[  432.249603] [brightness]sgm_brightness_set brightness = 300
+[  432.264786] [brightness]sgm_brightness_set brightness = 308
+[  432.282824] [brightness]sgm_brightness_set brightness = 316
+[  432.298678] [brightness]sgm_brightness_set brightness = 324
+[  434.162927] healthd: battery l=98 v=4309 t=20.6 h=2 st=5 c=152 fc=3963000 cc=428 chg=u
+[  435.470548] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  435.477144] healthd: battery l=98 v=4309 t=20.6 h=2 st=5 c=152 fc=3963000 cc=428 chg=u
+[  443.670828] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  443.676633] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=152 fc=3963000 cc=428 chg=u
+[  444.284946] msm-dwc3 4e00000.ssusb: Avail curr from USB = 2
+[  444.290237] init: Untracked pid 6534 exited with status 129
+[  444.291540] init: Untracked pid 6514 received signal 1
+[  444.461804] msm-dwc3 4e00000.ssusb: Avail curr from USB = 100
+[  444.463286] android_work: sent uevent USB_STATE=DISCONNECTED
+[  444.587221] android_work: sent uevent USB_STATE=CONNECTED
+[  444.592641] android_work: sent uevent USB_STATE=DISCONNECTED
+[  444.693887] read descriptors
+[  444.693977] read strings
+[  444.695378] init: processing action (sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1) from (/system/etc/init/hw/init.usb.configfs.rc:20)
+[  444.699189] init: Command 'symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1' action=sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1 (/system/etc/init/hw/init.usb.configfs.rc:22) took 0ms and failed: symlink() failed: File exists
+[  444.705933] android_work: did not send uevent (0 0 0000000000000000)
+[  445.013067] android_work: sent uevent USB_STATE=CONNECTED
+[  445.017539] configfs-gadget gadget: high-speed config #1: b
+[  445.018357] msm-dwc3 4e00000.ssusb: Avail curr from USB = 500
+[  445.018761] android_work: sent uevent USB_STATE=CONFIGURED
+[  451.860007] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  451.867258] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  453.207480] msm-dwc3 4e00000.ssusb: Avail curr from USB = 2
+[  453.380961] msm-dwc3 4e00000.ssusb: Avail curr from USB = 100
+[  453.384286] android_work: sent uevent USB_STATE=DISCONNECTED
+[  453.505808] android_work: sent uevent USB_STATE=CONNECTED
+[  453.510349] android_work: sent uevent USB_STATE=DISCONNECTED
+[  453.542442] read descriptors
+[  453.542560] read strings
+[  453.544249] init: processing action (sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1) from (/system/etc/init/hw/init.usb.configfs.rc:20)
+[  453.546815] init: Command 'symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1' action=sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1 (/system/etc/init/hw/init.usb.configfs.rc:22) took 1ms and failed: symlink() failed: File exists
+[  453.604632] android_work: did not send uevent (0 0 0000000000000000)
+[  453.605241] init: Command 'write /config/usb_gadget/g1/UDC ${sys.usb.controller}' action=sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1 (/system/etc/init/hw/init.usb.configfs.rc:23) took 57ms and succeeded
+[  453.932291] android_work: sent uevent USB_STATE=CONNECTED
+[  453.943671] configfs-gadget gadget: high-speed config #1: b
+[  453.944143] msm-dwc3 4e00000.ssusb: Avail curr from USB = 500
+[  453.945672] android_work: sent uevent USB_STATE=CONFIGURED
+[  454.419653] msm-dwc3 4e00000.ssusb: Avail curr from USB = 2
+[  454.601423] msm-dwc3 4e00000.ssusb: Avail curr from USB = 100
+[  454.603105] android_work: sent uevent USB_STATE=DISCONNECTED
+[  454.727535] android_work: sent uevent USB_STATE=CONNECTED
+[  454.732203] android_work: sent uevent USB_STATE=DISCONNECTED
+[  454.755410] read descriptors
+[  454.755865] read strings
+[  454.760595] init: processing action (sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1) from (/system/etc/init/hw/init.usb.configfs.rc:20)
+[  454.764915] init: Command 'symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1' action=sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1 (/system/etc/init/hw/init.usb.configfs.rc:22) took 1ms and failed: symlink() failed: File exists
+[  454.824686] android_work: did not send uevent (0 0 0000000000000000)
+[  454.825239] init: Command 'write /config/usb_gadget/g1/UDC ${sys.usb.controller}' action=sys.usb.config=adb && sys.usb.configfs=1 && sys.usb.ffs.ready=1 (/system/etc/init/hw/init.usb.configfs.rc:23) took 59ms and succeeded
+[  455.154397] android_work: sent uevent USB_STATE=CONNECTED
+[  455.161729] configfs-gadget gadget: high-speed config #1: b
+[  455.162188] msm-dwc3 4e00000.ssusb: Avail curr from USB = 500
+[  455.164690] android_work: sent uevent USB_STATE=CONFIGURED
+[  460.070805] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  460.077069] healthd: battery l=98 v=4309 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  465.944655] type=1400 audit(1672758500.480:88): avc: denied { ioctl } for comm="su" path="/dev/pts/0" dev="devpts" ino=3 ioctlcmd=0x5404 scontext=u:r:magisk_client:s0 tcontext=u:object_r:devpts:s0 tclass=chr_file permissive=0
+[  466.749397] init: Untracked pid 6582 exited with status 0
+[  468.263076] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  468.302479] healthd: battery l=98 v=4308 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  474.180898] [brightness]sgm_brightness_set brightness = 318
+[  474.195027] [brightness]sgm_brightness_set brightness = 294
+[  474.214128] [brightness]sgm_brightness_set brightness = 268
+[  474.228813] [brightness]sgm_brightness_set brightness = 244
+[  474.244331] [brightness]sgm_brightness_set brightness = 220
+[  474.259955] [brightness]sgm_brightness_set brightness = 196
+[  474.277323] [brightness]sgm_brightness_set brightness = 172
+[  474.293890] [brightness]sgm_brightness_set brightness = 148
+[  474.311383] [brightness]sgm_brightness_set brightness = 124
+[  474.328693] [brightness]sgm_brightness_set brightness = 103
+[  474.668076] NOHZ: local_softirq_pending 08
+[  474.668092] NOHZ: local_softirq_pending 08
+[  474.677392] init: Service 'vendor.ims_rtp_daemon' (pid 1883) received signal 9
+[  474.677437] init: Sending signal 9 to service 'vendor.ims_rtp_daemon' (pid 1883) process group...
+[  474.677989] libprocessgroup: Successfully killed process cgroup uid 1001 pid 1883 in 0ms
+[  474.679978] init: starting service 'vendor.ims_rtp_daemon'...
+[  474.742796] type=1400 audit(1672758509.280:89): avc: denied { read } for comm="DispatcherModul" name="u:object_r:default_prop:s0" dev="tmpfs" ino=2952 scontext=u:r:rild:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+[  476.409136] type=1400 audit(1672758510.940:90): avc: denied { read } for comm="DispatcherModul" name="u:object_r:default_prop:s0" dev="tmpfs" ino=2952 scontext=u:r:rild:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+[  476.456507] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  476.460701] healthd: battery l=98 v=4308 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  476.672465] HTB: quantum of class 10001 is big. Consider r2q change.
+[  476.755447] HTB: quantum of class 10010 is big. Consider r2q change.
+[  478.149535] type=1400 audit(1672758512.680:91): avc: denied { read } for comm="DispatcherModul" name="u:object_r:default_prop:s0" dev="tmpfs" ino=2952 scontext=u:r:rild:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+[  478.513373] logd: logdr: UID=10179 GID=10179 PID=3224 n tail=0 logMask=4 pid=0 start=0ns timeout=0ns
+[  479.362666] rmt_storage:INFO:rmt_storage_rw_iovec_cb: Write iovec request (req_h 0x12 wr_count 11) received for /boot/modem_fs2
+[  479.363563] rmt_storage:INFO:rmt_storage_client_thread: Calling Write [offset=0, size=2097152, req_h 0x12, wr_count 11] for /boot/modem_fs2!
+[  479.400578] IRQ 7: no longer affine to CPU5
+[  479.453447] rmt_storage:INFO:rmt_storage_client_thread: Done Write (bytes = 2097152, req_h 0x12, wr_count 11) for /boot/modem_fs2!
+[  479.554154] rmt_storage:INFO:rmt_storage_rw_iovec_cb: Write iovec request (req_h 0x13 wr_count 12) received for /boot/modem_fs1
+[  479.554552] rmt_storage:INFO:rmt_storage_client_thread: Calling Write [offset=0, size=2097152, req_h 0x13, wr_count 12] for /boot/modem_fs1!
+[  479.612962] rmt_storage:INFO:rmt_storage_client_thread: Done Write (bytes = 2097152, req_h 0x13, wr_count 12) for /boot/modem_fs1!
+[  479.722193] rmt_storage:INFO:rmt_storage_rw_iovec_cb: Write iovec request (req_h 0x14 wr_count 13) received for /boot/modem_fs2
+[  479.722689] rmt_storage:INFO:rmt_storage_client_thread: Calling Write [offset=0, size=2097152, req_h 0x14, wr_count 13] for /boot/modem_fs2!
+[  479.752278] rmt_storage:INFO:rmt_storage_client_thread: Done Write (bytes = 2097152, req_h 0x14, wr_count 13) for /boot/modem_fs2!
+[  479.844745] rmt_storage:INFO:rmt_storage_rw_iovec_cb: Write iovec request (req_h 0x15 wr_count 14) received for /boot/modem_fs1
+[  479.844966] rmt_storage:INFO:rmt_storage_client_thread: Calling Write [offset=0, size=2097152, req_h 0x15, wr_count 14] for /boot/modem_fs1!
+[  479.872906] rmt_storage:INFO:rmt_storage_client_thread: Done Write (bytes = 2097152, req_h 0x15, wr_count 14) for /boot/modem_fs1!
+[  480.130765] HTB: quantum of class 10010 is big. Consider r2q change.
+[  480.400500] HTB: quantum of class 10001 is big. Consider r2q change.
+[  480.443324] HTB: quantum of class 10010 is big. Consider r2q change.
+[  480.460750] IRQ 7: no longer affine to CPU4
+[  480.760231] IRQ 7: no longer affine to CPU7
+[  481.100418] IRQ 7: no longer affine to CPU5
+[  481.651537] [brightness]sgm_brightness_set brightness = 0
+[  481.687612] type=1400 audit(1672758516.220:92): avc: denied { read } for comm="Binder:527_2" name="wakeup8" dev="sysfs" ino=45949 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+[  481.729160] [NVT-ts] nvt_drm_notifier_callback 2384: event=2, *blank=1
+[  481.729184] [NVT-ts] nvt_irq_enable 267: enable=0, desc->depth=1
+[  481.729190] [NVT-ts] nvt_ts_suspend 2259: start
+[  481.790871] [NVT-ts] nvt_ts_suspend 2303: end
+[  481.790912] thermal_notifier_callback 3571
+[  481.790953] [brightness]sgm_brightness_set brightness = 0
+[  482.001781] thermal_notifier_callback 3571
+[  482.001798] thermal_notifier lct_backlight_off:1
+[  482.002246] smblib_set_prop_system_temp_level val=0, chg->system_temp_level=0, LctThermal=1, lct_backlight_off= 1, IsInCall=0 \x0a 
+[  482.337826] i2c_geni 4a8c000.i2c: i2c error :-107
+[  482.337854] nq-nci 1-0028: nfc_write: failed to write -107
+[  483.967581] type=1400 audit(1672758518.500:93): avc: denied { read } for comm="Binder:527_2" name="wakeup8" dev="sysfs" ino=45949 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+[  483.988459] thermal_notifier_callback 3571
+[  483.988467] thermal_notifier lct_backlight_off:0
+[  483.988567] dsi-ctrl:[_dsi_ctrl_setup_isr] [DSI_0] IRQ 229 registered
+[  483.988636] smblib_set_prop_system_temp_level val=0, chg->system_temp_level=0, LctThermal=1, lct_backlight_off= 0, IsInCall=0 \x0a 
+[  484.079913] i2c_geni 4a8c000.i2c: i2c error :-107
+[  484.079938] nq-nci 1-0028: nfc_write: failed to write -107
+[  484.145013] [brightness]sgm_brightness_set brightness = 0
+[  484.146177] [NVT-ts] nvt_drm_notifier_callback 2390: event=1, *blank=0
+[  484.146214] thermal_notifier_callback 3571
+[  484.146432] [NVT-ts] nvt_ts_resume 2324: start
+[  484.146442] [NVT-ts] update_firmware_request 318: filename is novatek_ts_ebbg_fw.bin
+[  484.159227] [brightness]sgm_brightness_set brightness = 325
+[  484.159860] ueventd: firmware: loading 'novatek_ts_ebbg_fw.bin' for '/devices/platform/soc/4a88000.spi/spi_master/spi1/spi1.0/firmware/novatek_ts_ebbg_fw.bin'
+[  484.167849] ueventd: loading /devices/platform/soc/4a88000.spi/spi_master/spi1/spi1.0/firmware/novatek_ts_ebbg_fw.bin took 8ms
+[  484.177871] [NVT-ts] nvt_get_fw_need_write_size 69: fw_need_write_size = 110592(0x1b000), NVT end flag
+[  484.177898] [NVT-ts] nvt_bin_header_parser 176: ovly_info = 0, ilm_dlm_num = 2, ovly_sec_num = 0, info_sec_num = 13, partition = 15
+[  484.178064] [brightness]sgm_brightness_set brightness = 303
+[  484.220560] IRQ 7: no longer affine to CPU7
+[  484.287424] [NVT-ts] nvt_update_firmware 937: Update firmware success! <109499 us>
+[  484.287607] [NVT-ts] nvt_get_fw_info 766: FW type is 0x01
+[  484.287823] [NVT-ts] nvt_read_pid 708: PID=5923
+[  484.309675] [NVT-ts] nvt_irq_enable 267: enable=1, desc->depth=0
+[  484.309694] [NVT-ts] nvt_ts_resume 2359: end
+[  484.400334] IRQ 7: no longer affine to CPU4
+[  484.686180] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  484.697318] healthd: battery l=98 v=4295 t=20.7 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  492.850906] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  492.853769] healthd: battery l=98 v=4273 t=20.8 h=2 st=5 c=22735 fc=3963000 cc=428 chg=u
+[  493.026036] [wpa_su][0x238224cf4][16:08:47.568454] wlan: [2397:I:HDD] wlan0(vdevid-0): Received Disconnect reason:3 WLAN_REASON_DEAUTH_LEAVING
+[  493.026868] [schedu][0x238228b67][16:08:47.569286] wlan: [2103:I:PE] Deauth TX: vdev 0 seq_num 2051 reason 3 waitForAck 1 to 00:a0:57:31:00:a4 from 3e:28:f7:25:c5:f3
+[  493.043657] [schedu][0x238277649][16:08:47.586072] wlan: [2103:I:TXRX] ol_txrx_peer_detach: 3477: ol_txrx_peer_detach peer 0000000000000000, peer->ref_cnt 10
+[  493.043688] [schedu][0x2382778ff][16:08:47.586108] wlan: [2103:I:TXRX] ol_txrx_peer_detach: 3521: started peer_unmap_timer for peer 0000000000000000
+[  493.044601] [soft_i][0x23827b8db][16:08:47.586959] wlan: [0:I:TXRX] ol_txrx_peer_release_ref: 3326: [9][0]: Deleting peer 0000000000000000 ref_cnt -> 0 
+[  493.052582] [schedu][0x2382a13cb][16:08:47.594998] wlan: [2103:I:HDD] wlan0(vdevid-0): disconnected
+[  493.052628] [schedu][0x2382a1793][16:08:47.595049] wlan: [2103:I:HDD] hdd_disable_rx_ol_in_concurrency: 1980: Disable TCP delack as LRO is enabled
+[  493.056040] [wpa_su][0x2382b16cd][16:08:47.598452] wlan: [2397:I:HDD] Disconnect reason: 3 WLAN_REASON_DEAUTH_LEAVING vendor: 0  LG: 1
+[  493.222846] [schedu][0x2385bf5d4][16:08:47.765265] wlan: [2103:I:TXRX] ol_txrx_peer_detach: 3477: ol_txrx_peer_detach peer 0000000000000000, peer->ref_cnt 7
+[  493.234712] [soft_i][0x2385f6fbf][16:08:47.777131] wlan: [0:I:TXRX] ol_txrx_peer_release_ref: 3326: [9][0]: Deleting peer 0000000000000000 ref_cnt -> 0 
+[  493.253057] init: Service 'wpa_supplicant' (pid 2397) exited with status 0 oneshot service took 458.565002 seconds in background
+[  493.253102] init: Sending signal 9 to service 'wpa_supplicant' (pid 2397) process group...
+[  493.253504] libprocessgroup: Successfully killed process cgroup uid 0 pid 2397 in 0ms
+[  493.364999] [schedu][0x238859b76][16:08:47.907421] wlan: [2103:I:OSIF] scan start scan id 40962
+[  493.382920] init: processing action (sys.sysctl.tcp_def_init_rwnd=*) from (/system/etc/init/hw/init.rc:994)
+[  493.394249] [schedu][0x2388e2ac5][16:08:47.936638] wlan: [2103:E:QDF] __pktlog_enable: 677: __pktlog_enable: pktlog operation not in progress
+[  493.449398] type=1400 audit(1672758527.980:94): avc: denied { read } for comm="Binder:527_2" name="wakeup8" dev="sysfs" ino=45949 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+[  493.477935] type=1400 audit(1672758528.010:95): avc: denied { read } for comm="Binder:527_2" name="wakeup8" dev="sysfs" ino=45949 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+[  494.154701] healthd: battery l=98 v=4275 t=20.8 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  496.191329] [schedu][0x23bc1a1b4][16:08:50.733744] wlan: [2103:I:OSIF] vdev 0, scan id 40962 type COMPLETED(1) reason COMPLETED(1) scan found 16 bss
+[  497.820735] IRQ 7: no longer affine to CPU7
+[  498.929297] type=1400 audit(1672758533.460:96): avc: denied { read } for comm="Binder:527_2" name="wakeup8" dev="sysfs" ino=45949 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+[  498.962843] IRQ 7: no longer affine to CPU7
+[  501.052598] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  501.062331] healthd: battery l=98 v=4283 t=20.9 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
+[  507.260630] NOHZ: local_softirq_pending 08
+[  507.260675] NOHZ: local_softirq_pending 08
+[  508.558483] NOHZ: local_softirq_pending 08
+[  508.558532] NOHZ: local_softirq_pending 08
+[  509.248166] QCOM-STEPCHG: handle_jeita:  jeita vote fv_uv:4400000 last_vol:4400000
+[  509.253846] healthd: battery l=98 v=4297 t=21.0 h=2 st=5 c=0 fc=3963000 cc=428 chg=u
